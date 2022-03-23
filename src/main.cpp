@@ -51,7 +51,8 @@ int main()
         case 'c': // change box
             int newNumber;
             cin >> newNumber;
-            message = suduko->changeValueAtPosition(player->getPosition(), newNumber);
+            if (!suduko->changeValueAtPosition(player->getPosition(), newNumber))
+                message = "Value cant be changed";
             break;
         case 'r': // result
             if (suduko->getResult())
