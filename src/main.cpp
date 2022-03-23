@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 
+#include "Suduko.h"
+
 using std::cin;
 using std::cout;
 using std::string;
@@ -22,57 +24,60 @@ bool getResult();
 
 int main()
 {
-    getSudukoBoard();
-    int x = 0, y = 0;
-    char input;
-    bool keepPlaying = true;
-    string message = "";
-    while (keepPlaying)
-    {
-        drawBoard(x, y);
-        if (message != "")
-            cout << "Message: " << message << '\n';
-        message = "";
-        cout << "Tip: > - position,  q - quit, wasd - movement, c [0-9] - change, r - result \n";
-        cin >> input;
-        switch (input)
-        {
-        case 'q': // quit
-            keepPlaying = false;
-            break;
-        case 'w': // movement
-            x = (x - 1) % 9;
-            if (x < 0)
-                x = 8;
-            break;
-        case 'a': // movement
-            y = (y - 1) % 9;
-            if (y < 0)
-                y = 8;
-            break;
-        case 's': // movement
-            x = (x + 1) % 9;
-            break;
-        case 'd': // movement
-            y = (y + 1) % 9;
-            break;
-        case 'c': // change box
-            int newNumber;
-            cin >> newNumber;
-            message = changeValue(x, y, newNumber);
-            break;
-        case 'r': // result
-            if (getResult())
-                message = "Game completed";
-            else
-                message = "Not the right answer";
-            break;
+    Suduko *suduko = new Suduko(0, boards);
+    suduko->draw();
 
-        default:
-            message = "Wrong Input";
-            break;
-        }
-    }
+    // getSudukoBoard();
+    // int x = 0, y = 0;
+    // char input;
+    // bool keepPlaying = true;
+    // string message = "";
+    // while (keepPlaying)
+    // {
+    //     drawBoard(x, y);
+    //     if (message != "")
+    //         cout << "Message: " << message << '\n';
+    //     message = "";
+    //     cout << "Tip: > - position,  q - quit, wasd - movement, c [0-9] - change, r - result \n";
+    //     cin >> input;
+    //     switch (input)
+    //     {
+    //     case 'q': // quit
+    //         keepPlaying = false;
+    //         break;
+    //     case 'w': // movement
+    //         x = (x - 1) % 9;
+    //         if (x < 0)
+    //             x = 8;
+    //         break;
+    //     case 'a': // movement
+    //         y = (y - 1) % 9;
+    //         if (y < 0)
+    //             y = 8;
+    //         break;
+    //     case 's': // movement
+    //         x = (x + 1) % 9;
+    //         break;
+    //     case 'd': // movement
+    //         y = (y + 1) % 9;
+    //         break;
+    //     case 'c': // change box
+    //         int newNumber;
+    //         cin >> newNumber;
+    //         message = changeValue(x, y, newNumber);
+    //         break;
+    //     case 'r': // result
+    //         if (getResult())
+    //             message = "Game completed";
+    //         else
+    //             message = "Not the right answer";
+    //         break;
+
+    //     default:
+    //         message = "Wrong Input";
+    //         break;
+    //     }
+    // }
     return 0;
 }
 
