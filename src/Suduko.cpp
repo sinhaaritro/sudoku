@@ -3,6 +3,7 @@
 #include <ctime>
 
 #include "Suduko.h"
+#include "Point2D.h"
 
 #define BOARD_SIZE 9
 
@@ -22,7 +23,7 @@ Suduko::Suduko(int level, int preMadeBoard[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE])
     createPlayableBoard();
 }
 
-void Suduko::drawBoard(int x, int y)
+void Suduko::drawBoard(Point2D playerPosition)
 {
     for (int i = 0; i < 3; i++)
     {
@@ -38,9 +39,10 @@ void Suduko::drawBoard(int x, int y)
                     {
                         int row = i * 3 + j / 2;
                         int col = k * 3 + l;
-                        drawMarkerIfPlayerAtPosition(x, y, row, col);
-                        drawValueAtPosition(row, col);
-                        drawMarkForModification(row, col);
+                        Point2D drawingPos = {row, col};
+                        drawMarkerIfPlayerAtPosition(playerPosition, drawingPos);
+                        drawValueAtPosition(drawingPos);
+                        drawMarkForModification(drawingPos);
                         cout << "|";
                     }
                     cout << " ";
@@ -65,11 +67,11 @@ Suduko::~Suduko()
     board = nullptr;
 }
 
-bool Suduko::changeValue(int x, int y, int val)
+bool Suduko::changeValueAtPosition(Point2D playerPosition, int newVal)
 {
-    if (board[x][y].getIsChangable())
+    if (board[playerPosition.x][playerPosition.y].getIsChangable())
     {
-        board[x][y].setModifiedValue(val);
+        board[playerPosition.x][playerPosition.y].setModifiedValue(newVal);
         return true;
     }
     return false;
@@ -99,32 +101,32 @@ void Suduko::createPlayableBoard(int fillPercentage)
         }
 };
 
-void Suduko::drawMarkerIfPlayerAtPosition(int x, int y, int row, int col)
+void Suduko::drawMarkerIfPlayerAtPosition(Point2D playerPosition, Point2D drawingPosition)
 {
-    if (row == x && col == y)
+    if (drawingPosition.x == playerPosition.x && drawingPosition.y == playerPosition.y)
         cout << '>';
     else
         cout << ' ';
 };
 
-void Suduko::drawValueAtPosition(int row, int col)
+void Suduko::drawValueAtPosition(Point2D drawingPosition)
 {
-    if (board[row][col].getIsChangable())
+    if (board[drawingPosition.x][drawingPosition.y].getIsChangable())
     {
-        if (board[row][col].getModifiedValue() == 0)
+        if (board[drawingPosition.x][drawingPosition.y].getModifiedValue() == 0)
             cout << " ";
         else
-            cout << board[row][col].getModifiedValue();
+            cout << board[drawingPosition.x][drawingPosition.y].getModifiedValue();
     }
     else
-        cout << board[row][col].getOriginalValue();
+        cout << board[drawingPosition.x][drawingPosition.y].getOriginalValue();
 };
 
-void Suduko::drawMarkForModification(int row, int col)
+void Suduko::drawMarkForModification(Point2D drawingPosition)
 {
-    if (board[row][col].getIsChangable())
+    if (board[drawingPosition.x][drawingPosition.y].getIsChangable())
     {
-        if (board[row][col].getModifiedValue() == 0)
+        if (board[drawingPosition.x][drawingPosition.y].getModifiedValue() == 0)
             cout << " ";
         else
             cout << "*";

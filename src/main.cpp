@@ -3,6 +3,7 @@
 #include <ctime>
 
 #include "Suduko.h"
+#include "Player.h"
 
 using std::cin;
 using std::cout;
@@ -17,14 +18,14 @@ int main()
 {
     srand(time(NULL));
     Suduko *suduko = new Suduko(rand() % (numberOfBoards - 1), boards);
-    int x = 0, y = 0;
+    Player *player = new Player();
     char input;
     bool keepPlaying = true;
     string message = "";
     while (keepPlaying)
     {
         cout << " START: \n";
-        suduko->drawBoard(x, y);
+        suduko->drawBoard(player->getPosition());
         if (message != "")
             cout << "Message: " << message << '\n';
         message = "";
@@ -36,25 +37,21 @@ int main()
             keepPlaying = false;
             break;
         case 'w': // movement
-            x = (x - 1) % 9;
-            if (x < 0)
-                x = 8;
+            player->moveUp();
             break;
         case 'a': // movement
-            y = (y - 1) % 9;
-            if (y < 0)
-                y = 8;
+            player->moveLeft();
             break;
         case 's': // movement
-            x = (x + 1) % 9;
+            player->moveDown();
             break;
         case 'd': // movement
-            y = (y + 1) % 9;
+            player->moveRight();
             break;
         case 'c': // change box
             int newNumber;
             cin >> newNumber;
-            message = suduko->changeValue(x, y, newNumber);
+            message = suduko->changeValueAtPosition(player->getPosition(), newNumber);
             break;
         case 'r': // result
             if (suduko->getResult())

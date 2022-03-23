@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "BoardPosition.h"
+#include "Point2D.h"
 
 using std::string;
 
@@ -17,15 +18,15 @@ public:
     Suduko(int level, int preMadeBoard[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE]); // Generate a board from pre defined levels
     Suduko(string board);                                                    // Generate a board from a string input
     ~Suduko();
-    void drawBoard(int x, int y);
-    bool changeValue(int, int, int);
+    bool changeValueAtPosition(Point2D playerPosition, int newValue);
     bool getResult();
+    void drawBoard(Point2D playerPosition);
 
 private:
     void createPlayableBoard(int fillPercentage = 50);
-    void drawMarkerIfPlayerAtPosition(int x, int y, int row, int col);
-    void drawValueAtPosition(int row, int col);
-    void drawMarkForModification(int row, int col);
+    void drawMarkerIfPlayerAtPosition(Point2D playerPosition, Point2D drawingPosition);
+    void drawValueAtPosition(Point2D drawingPosition);
+    void drawMarkForModification(Point2D drawingPosition);
 };
 
 #endif
