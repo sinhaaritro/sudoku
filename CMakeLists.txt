@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.22.2)
 
 project(Suduko)
 
-add_executable(${PROJECT_NAME} ./src/main.cpp)
+include_directories(./src) #For Headers
+
+file(GLOB SOURCES "src/*.cpp") #For CPP
+
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static") #T1
 # set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lws2_32 ${CMAKE_CSS_STANDARD_LIBRARIES}") #T2
