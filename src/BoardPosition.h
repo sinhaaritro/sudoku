@@ -4,16 +4,20 @@
 class BoardPosition
 {
 public:
-    int *modifiedValue;
     BoardPosition();
     BoardPosition(int v);
-    ~BoardPosition();
-    void setIsChangableToTrue();
+    // ~BoardPosition();
     int getOriginalValue();
+    void setIsChangableToTrue();
+    bool getIsChangable();
+    void setModifiedValue(int value);
+    int getModifiedValue();
+    bool isCorrect();
 
 private:
     int originalValue;
     bool isChangable;
+    int modifiedValue;
 };
 
 #endif

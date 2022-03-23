@@ -11,79 +11,124 @@ using std::string;
 
 Suduko::Suduko(int level, int preMadeBoard[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE])
 {
-    int val;
     board = new BoardPosition *[BOARD_SIZE];
     for (int i = 0; i < BOARD_SIZE; i++)
-        board[i] = new BoardPosition[BOARD_SIZE];
-
-    for (int i = 0; i < BOARD_SIZE; i++)
-    {
-        for (int j = 0; j < BOARD_SIZE; j++)
+        for (int i = 0; i < BOARD_SIZE; i++)
         {
-            val = preMadeBoard[level][i][j];
-            board[i][j] = val;
+            board[i] = new BoardPosition[BOARD_SIZE];
+            for (int j = 0; j < BOARD_SIZE; j++)
+                board[i][j] = preMadeBoard[level][i][j];
         }
-    }
+    createPlayableBoard();
 }
 
-void Suduko::draw()
+void Suduko::drawBoard(int x, int y)
 {
-    for (int i = 0; i < BOARD_SIZE; i++)
+    for (int i = 0; i < 3; i++)
     {
-        for (int j = 0; j < BOARD_SIZE; j++)
+        cout << "+---+---+---+++---+---+---+++---+---+---+\n";
+        for (int j = 0; j < 5; j++)
         {
-            if (board[i][j].getOriginalValue() == 0)
-                cout << '.';
+            if (j % 2 == 0)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    cout << '|';
+                    for (int l = 0; l < 3; l++)
+                    {
+                        int row = i * 3 + j / 2;
+                        int col = k * 3 + l;
+                        drawMarkerIfPlayerAtPosition(x, y, row, col);
+                        drawValueAtPosition(row, col);
+                        drawMarkForModification(row, col);
+                        cout << "|";
+                    }
+                    cout << " ";
+                }
+                cout << '\n';
+            }
             else
-                cout << board[i][j].getOriginalValue();
+                cout << "+---+---+---+ +---+---+---+ +---+---+---+\n";
         }
-        cout << '\n';
+        cout << "+---+---+---+++---+---+---+++---+---+---+\n";
     }
 }
 
 Suduko::~Suduko()
 {
     for (int i = 0; i < BOARD_SIZE; i++)
+    {
         delete[] board[i];
+        board[i] = nullptr;
+    }
     delete[] board;
     board = nullptr;
 }
 
-string Suduko::changeValue(int, int, int)
+bool Suduko::changeValue(int x, int y, int val)
 {
-    return "";
-}
-
-bool verify()
-{
-    return true;
+    if (board[x][y].getIsChangable())
+    {
+        board[x][y].setModifiedValue(val);
+        return true;
+    }
+    return false;
 }
 
 bool Suduko::getResult()
 {
-    // for (int i = 0; i < BOARD_SIZE; i++)
-    //     for (int j = 0; j < SIZE; j++)
-    //         if (playingBoard[i][j] != filledBoard[i][j])
-    //             return false;
+    for (int i = 0; i < BOARD_SIZE; i++)
+        for (int j = 0; j < BOARD_SIZE; j++)
+            if (!board[i][j].isCorrect())
+                return false;
     return true;
+}
+
+void Suduko::createPlayableBoard(int fillPercentage)
+{
+    srand(time(NULL));
+    for (int i = 0; i < 9; i++)
+        for (int j = 0; j < 9; j++)
+        {
+            int randomValue = rand() % 100;
+            if (randomValue > fillPercentage)
+            {
+                board[i][j].setIsChangableToTrue();
+                board[i][j].setModifiedValue(0);
+            }
+        }
 };
 
-void Suduko::createUnfilledAndPlayingBoard(int fillPercentage){
-    //     unfilledBoard = new int *[9];
-    //     for (int i = 0; i < 9; i++)
-    //         unfilledBoard[i] = new int[9];
-    //     playingBoard = new int *[9];
-    //     for (int i = 0; i < 9; i++)
-    //         playingBoard[i] = new int[9];
+void Suduko::drawMarkerIfPlayerAtPosition(int x, int y, int row, int col)
+{
+    if (row == x && col == y)
+        cout << '>';
+    else
+        cout << ' ';
+};
 
-    //     srand(time(NULL));
-    //     for (int i = 0; i < 9; i++)
-    //         for (int j = 0; j < 9; j++)
-    //         {
-    //             int randomValue = rand() % 100;
-    //             if (randomValue > fillPercentage)
-    //                 playingBoard[i][j] = unfilledBoard[i][j] = 0;
-    //             else
-    //                 playingBoard[i][j] = unfilledBoard[i][j] = filledBoard[i][j];
-    //         }
+void Suduko::drawValueAtPosition(int row, int col)
+{
+    if (board[row][col].getIsChangable())
+    {
+        if (board[row][col].getModifiedValue() == 0)
+            cout << " ";
+        else
+            cout << board[row][col].getModifiedValue();
+    }
+    else
+        cout << board[row][col].getOriginalValue();
+};
+
+void Suduko::drawMarkForModification(int row, int col)
+{
+    if (board[row][col].getIsChangable())
+    {
+        if (board[row][col].getModifiedValue() == 0)
+            cout << " ";
+        else
+            cout << "*";
+    }
+    else
+        cout << " ";
 };
