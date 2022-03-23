@@ -68,7 +68,7 @@ bool Suduko::getResult()
     return true;
 };
 
-void Suduko::createUnfilledAndPlayingBoard(int fillPercentage = 50){
+void Suduko::createUnfilledAndPlayingBoard(int fillPercentage){
     //     unfilledBoard = new int *[9];
     //     for (int i = 0; i < 9; i++)
     //         unfilledBoard[i] = new int[9];
