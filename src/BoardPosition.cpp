@@ -2,6 +2,8 @@
 
 #include "BoardPosition.h"
 
+BoardPosition::BoardPosition(){};
+
 BoardPosition::BoardPosition(int v) : originalValue(v), isChangable(false), modifiedValue(new int){};
 
 BoardPosition::~BoardPosition()
