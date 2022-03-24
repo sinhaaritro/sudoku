@@ -29,7 +29,7 @@ int main()
         if (message != "")
             cout << "Message: " << message << '\n';
         message = "";
-        cout << "Tip: >= Position, *= Value Modified, q= Quit, wasd= Movement, c[0-9]= Change, r= Result \n";
+        cout << "Tip: >= Position, *= Value Modified, q= Quit, wasd= Movement, c[1-9]= Change, r= Result \n";
         cin >> input;
         switch (input)
         {
