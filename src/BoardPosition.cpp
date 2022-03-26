@@ -10,30 +10,15 @@ BoardPosition::BoardPosition(int v) : originalValue(v), isChangable(false){};
 //     modifiedValue = nullptr;
 // }
 
-int BoardPosition::getOriginalValue()
-{
-    return originalValue;
-}
+int BoardPosition::getOriginalValue() { return originalValue; }
 
-void BoardPosition::setIsChangableToTrue()
-{
-    isChangable = true;
-}
+void BoardPosition::setIsChangableToTrue() { isChangable = true; }
 
-bool BoardPosition::getIsChangable()
-{
-    return isChangable;
-}
+bool BoardPosition::getIsChangable() { return isChangable; }
 
-void BoardPosition::setModifiedValue(int value)
-{
-    modifiedValue = value;
-};
+void BoardPosition::setModifiedValue(int value) { modifiedValue = value; }
 
-int BoardPosition::getModifiedValue()
-{
-    return modifiedValue;
-}
+int BoardPosition::getModifiedValue() { return modifiedValue; }
 
 bool BoardPosition::isCorrect()
 {
@@ -42,4 +27,23 @@ bool BoardPosition::isCorrect()
     if (modifiedValue == originalValue)
         return true;
     return false;
+}
+
+void BoardPosition::addNeighbour(BoardPosition *neighbour)
+{
+    neighbours[neighboursCount] = neighbour;
+    neighboursCount++;
+}
+
+bool BoardPosition::isValueAtPositionValid(int value)
+{
+    // Loop through rows
+    // Loop through cols
+    // Loop through grid
+    for (int i = 0; i < 24; i++)
+    {
+        if (neighbours[i]->originalValue == value)
+            return false;
+    }
+    return true;
 }
