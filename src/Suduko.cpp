@@ -26,28 +26,27 @@ Suduko::Suduko()
     createPlayableBoard();
 }
 
-Suduko::Suduko(int level, int preMadeBoard[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE])
+Suduko::Suduko(int level, int preMadeBoard[BOARD_SIZE][BOARD_SIZE])
 {
-    board = new BoardPosition *[BOARD_SIZE];
+    std::vector<Point2D> stack;
+    initializeValuesTo0(&stack);
     for (int i = 0; i < BOARD_SIZE; i++)
         for (int i = 0; i < BOARD_SIZE; i++)
         {
-            board[i] = new BoardPosition[BOARD_SIZE];
             for (int j = 0; j < BOARD_SIZE; j++)
-                board[i][j] = preMadeBoard[level][i][j];
+                boards[Point2D(i, j)]->originalValue = preMadeBoard[i][j];
         }
-    // createPlayableBoard();
+    createPlayableBoard();
 }
 
 Suduko::~Suduko()
 {
-    for (int i = 0; i < BOARD_SIZE; i++)
+    std::map<Point2D, BoardPosition *>::iterator it;
+    for (it = boards.begin(); it != boards.end(); it++)
     {
-        delete[] board[i];
-        board[i] = nullptr;
+        delete it->second;
     }
-    delete[] board;
-    board = nullptr;
+    boards.clear();
 }
 
 bool Suduko::changeValueAtPosition(Point2D playerPosition, int newVal)

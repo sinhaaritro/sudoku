@@ -13,11 +13,10 @@ class Suduko
 {
 public:
     const static int BOARD_SIZE = 9;
-    BoardPosition **board;
     std::map<Point2D, BoardPosition *> boards;
-    Suduko();                                                                // Generate a board from scratch
-    Suduko(int level, int preMadeBoard[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE]); // Generate a board from pre defined levels
-    Suduko(string board);                                                    // Generate a board from a string input
+    Suduko();                                                    // Generate a board from scratch
+    Suduko(int level, int preMadeBoard[BOARD_SIZE][BOARD_SIZE]); // Generate a board from pre defined levels
+    Suduko(string board);                                        // Generate a board from a string input
     ~Suduko();
     bool changeValueAtPosition(Point2D playerPosition, int newValue);
     bool getResult();
